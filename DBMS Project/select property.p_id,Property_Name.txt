@@ -1,0 +1,86 @@
+ select property.p_id,Property_Name
+    -> from property inner join rent_details on property.p_id=rent_details.p_id
+    -> where Property_Type="House" and Year>2020 and Available="Yes";
++------+----------------------+
+| p_id | Property_Name        |
++------+----------------------+
+|  513 | RBD Meadows          |
+|  525 | Purva Promenade      |
+|  531 | DLF Hyde Park-Estate |
+|  534 | Skynet Enclave       |
++------+----------------------+
+4 rows in set (0.01 sec)
+
+mysql> select Street,City,Landmark
+    -> from property inner join sale_details on property.p_id=sale_details.p_id
+    -> where Property_Type="House" and Selling_Price between 3000000 and 5000000;
++-------------------+----------+--------------------------+
+| Street            | City     | Landmark                 |
++-------------------+----------+--------------------------+
+| Christian Basti   | Guwahati | Near Café Coffee Day     |
+| Lokhra            | Guwahati | Near Guwahati University |
+| G.S. Road         | Guwahati | Near ABC Bus Stand       |
+| Zoo Road          | Guwahati | Near City Center Mall    |
+| City Complex Road | Guwahati | Near Army School         |
+| G.S. Road         | Guwahati | Near High Court          |
++-------------------+----------+--------------------------+
+6 rows in set (0.01 sec)
+
+mysql> select Street,City,Landmark,Property_Name
+    -> from property inner join rent_details on property.p_id=rent_details.p_id
+    -> where Street='G.S. Road' and Bedroom>=2 and Rent<15000;
++-----------+----------+-------------------------+-----------------+
+| Street    | City     | Landmark                | Property_Name   |
++-----------+----------+-------------------------+-----------------+
+| G.S. Road | Guwahati | Near Ganeshguri Flyover | Concorde Houses |
++-----------+----------+-------------------------+-----------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> select a.Fname,a.Lname,Sum(s.selling_price) as total_amount
+    -> from agent a inner join sale_details s on a.a_id=s.a_id
+    -> where Selling_Date like "%2023%" and s.Available="No"
+    -> group by a.a_id
+    -> order by total_amount desc
+    -> limit 1;
++-------+-------+--------------+
+| Fname | Lname | total_amount |
++-------+-------+--------------+
+| Mehul | Desai |      8800000 |
++-------+-------+--------------+
+1 row in set (0.01 sec)
+
+mysql> select a.Fname,a.Lname,avg(s.Selling_Price) as avg_selling_price,avg(DATEDIFF(s.Selling_Date,s.Registration_Date)) as avg_time_on_market from agent a inner join sale_details s on a.a_id=s.a_id
+    -> where Selling_Date like "%2018%"
+    -> group by a.a_id;
++--------+-----------+-------------------+--------------------+
+| Fname  | Lname     | avg_selling_price | avg_time_on_market |
++--------+-----------+-------------------+--------------------+
+| Mehul  | Desai     |      4900000.0000 |           623.0000 |
+| Vikram | Choudhary |      5500000.0000 |          1297.0000 |
++--------+-----------+-------------------+--------------------+
+2 rows in set (0.01 sec)
+
+mysql> select Property_Name,Street,City,Landmark
+    -> from property inner join sale_details on property.p_id=sale_details.p_id
+    -> where Property_type="House"
+    -> order by Selling_Price desc
+    -> limit 1;
++----------------+-----------------+----------+------------------+
+| Property_Name  | Street          | City     | Landmark         |
++----------------+-----------------+----------+------------------+
+| Golden Exotica | Paan Bazar Road | Guwahati | Near Bramhaputra |
++----------------+-----------------+----------+------------------+
+1 row in set (0.00 sec)
+
+mysql> select Property_Name,Street,City,Landmark
+    -> from property inner join rent_details on property.p_id=rent_details.p_id
+    -> where Property_type="House"
+    -> order by Rent desc
+    -> limit 1;
++----------------------+-----------+----------+-----------------+
+| Property_Name        | Street    | City     | Landmark        |
++----------------------+-----------+----------+-----------------+
+| DLF Hyde Park-Estate | G.S. Road | Guwahati | Near DPS School |
++----------------------+-----------+----------+-----------------+
+1 row in set (0.00 sec)

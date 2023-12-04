@@ -1,0 +1,40 @@
+----QUERY 1----
+select property.p_id,Property_Name
+from property inner join rent_details on property.p_id=rent_details.p_id
+where Property_Type="House" and Year>2020 and Available="Yes";
+
+----QUERY 2----
+select Street,City,Landmark
+from property inner join sale_details on property.p_id=sale_details.p_id
+where Property_Type="House" and Selling_Price between 3000000 and 5000000;
+
+----QUERY 3----
+select Street,City,Landmark,Property_Name
+from property inner join rent_details on property.p_id=rent_details.p_id
+where Street='G.S. Road' and Bedroom>=2 and Rent<15000;
+
+----QUERY 4----
+select a.Fname,a.Lname,Sum(s.selling_price) as total_amount 
+from agent a inner join sale_details s on a.a_id=s.a_id
+where Selling_Date like "%2023%" and s.Available="No" 
+group by a.a_id
+order by total_amount desc
+limit 1;
+
+----QUERY 5----
+select a.Fname,a.Lname,avg(s.Selling_Price) as avg_selling_price,avg(DATEDIFF(s.Selling_Date,s.Registeration_Date)) as avg_time_on_market from agent a inner join sale_details s on a.a_id=s.a_id
+where Selling_Date like "%2018%"
+group by a.a_id;
+
+----QUERY 6----
+select Property_Name,Street,City,Landmark
+from property inner join sale_details on property.p_id=sale_details.p_id
+where Property_type="House"
+order by Selling_Price desc
+limit 1;
+
+select Property_Name,Street,City,Landmark
+from property inner join rent_details on property.p_id=rent_details.p_id
+where Property_type="House"
+order by Rent desc
+limit 1;
